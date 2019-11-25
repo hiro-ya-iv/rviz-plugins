@@ -46,6 +46,29 @@ InitialPose3dTool::InitialPose3dTool()
     height_property_ = new rviz::FloatProperty("Height [m]", 0.0, "Height for pose estimate.", getPropertyContainer());
     roll_property_ = new rviz::FloatProperty("Roll [rad]", 0.0, "Roll for pose estimate.", getPropertyContainer());
     pitch_property_ = new rviz::FloatProperty("Pitch [rad]", 0.0, "Pitch for pose estimate.", getPropertyContainer());
+
+    cov_x_x_property_ = new rviz::FloatProperty("CovXX [m^2]", 0.0, "Covariance[0].", getPropertyContainer());
+    cov_y_y_property_ = new rviz::FloatProperty("CovYY [m^2]", 0.0, "Covariance[7].", getPropertyContainer());
+    cov_z_z_property_ = new rviz::FloatProperty("CovZZ [m^2]", 0.0, "Covariance[14].", getPropertyContainer());
+    cov_roll_roll_property_ = new rviz::FloatProperty("CovRollRoll [m^2]", 0.0, "Covariance[21].", getPropertyContainer());
+    cov_pitch_pitch_property_ = new rviz::FloatProperty("CovPitchPitch [m^2]", 0.0, "Covariance[28].", getPropertyContainer());
+    cov_yaw_yaw_property_ = new rviz::FloatProperty("CovYawYaw [m^2]", 0.0, "Covariance[35].", getPropertyContainer());
+    cov_x_y_property_ = new rviz::FloatProperty("CovXY [m^2]", 0.0, "Covariance[1].", getPropertyContainer());
+    cov_x_z_property_ = new rviz::FloatProperty("CovXZ [m^2]", 0.0, "Covariance[2].", getPropertyContainer());
+    cov_x_roll_property_ = new rviz::FloatProperty("CovXRoll [m^2]", 0.0, "Covariance[3].", getPropertyContainer());
+    cov_x_pitch_property_ = new rviz::FloatProperty("CovXPitch [m^2]", 0.0, "Covariance[4].", getPropertyContainer());
+    cov_x_yaw_property_ = new rviz::FloatProperty("CovXYaw [m^2]", 0.0, "Covariance[5].", getPropertyContainer());
+    cov_y_z_property_ = new rviz::FloatProperty("CovYZ [m^2]", 0.0, "Covariance[8].", getPropertyContainer());
+    cov_y_roll_property_ = new rviz::FloatProperty("CovYRoll [m^2]", 0.0, "Covariance[9].", getPropertyContainer());
+    cov_y_pitch_property_ = new rviz::FloatProperty("CovYPitch [m^2]", 0.0, "Covariance[10].", getPropertyContainer());
+    cov_y_yaw_property_ = new rviz::FloatProperty("CovYYaw [m^2]", 0.0, "Covariance[11].", getPropertyContainer());
+    cov_z_roll_property_ = new rviz::FloatProperty("CovZRoll [m^2]", 0.0, "Covariance[15].", getPropertyContainer());
+    cov_z_pitch_property_ = new rviz::FloatProperty("CovZPitch [m^2]", 0.0, "Covariance[16].", getPropertyContainer());
+    cov_z_yaw_property_ = new rviz::FloatProperty("CovZYaw [m^2]", 0.0, "Covariance[17].", getPropertyContainer());
+    cov_roll_pitch_property_ = new rviz::FloatProperty("CovRollPitch [m^2]", 0.0, "Covariance[22].", getPropertyContainer());
+    cov_roll_yaw_property_ = new rviz::FloatProperty("CovRollYaw [m^2]", 0.0, "Covariance[23].", getPropertyContainer());
+    cov_pitch_yaw_property_ = new rviz::FloatProperty("CovPitchYaw [m^2]", 0.0, "Covariance[29].", getPropertyContainer());
+
     auto_height_property_ = new rviz::BoolProperty("Auto Height", false, "Get height from point cloud map.", getPropertyContainer(), SLOT(updateGround()), this);
     map_topic_property_ = new rviz::RosTopicProperty("Map Topic", "/points_map", "Topic name of point cloud map", "sensor_msgs/PointCloud2", getPropertyContainer(), SLOT(updateGround()), this);
 }
@@ -124,7 +147,45 @@ void InitialPose3dTool::onPoseSet(double x, double y, double yaw)
     quaternion.setRPY(roll, pitch, yaw);
     msg.pose.pose.orientation = tf2::toMsg(quaternion);
 
+    msg.pose.covariance[0] = cov_x_x_property_->getFloat();
+    msg.pose.covariance[1] = cov_x_y_property_->getFloat();
+    msg.pose.covariance[2] = cov_x_z_property_->getFloat();
+    msg.pose.covariance[3] = cov_x_roll_property_->getFloat();
+    msg.pose.covariance[4] = cov_x_pitch_property_->getFloat();
+    msg.pose.covariance[5] = cov_x_yaw_property_->getFloat();
+    msg.pose.covariance[6] = cov_x_y_property_->getFloat();
+    msg.pose.covariance[7] = cov_y_y_property_->getFloat();
+    msg.pose.covariance[8] = cov_y_z_property_->getFloat();
+    msg.pose.covariance[9] = cov_y_roll_property_->getFloat();
+    msg.pose.covariance[10] = cov_y_pitch_property_->getFloat();
+    msg.pose.covariance[11] = cov_y_yaw_property_->getFloat();
+    msg.pose.covariance[12] = cov_x_z_property_->getFloat();
+    msg.pose.covariance[13] = cov_y_z_property_->getFloat();
+    msg.pose.covariance[14] = cov_z_z_property_->getFloat();
+    msg.pose.covariance[15] = cov_z_roll_property_->getFloat();
+    msg.pose.covariance[16] = cov_z_pitch_property_->getFloat();
+    msg.pose.covariance[17] = cov_z_yaw_property_->getFloat();
+    msg.pose.covariance[18] = cov_x_roll_property_->getFloat();
+    msg.pose.covariance[19] = cov_y_roll_property_->getFloat();
+    msg.pose.covariance[20] = cov_z_roll_property_->getFloat();
+    msg.pose.covariance[21] = cov_roll_roll_property_->getFloat();
+    msg.pose.covariance[22] = cov_roll_pitch_property_->getFloat();
+    msg.pose.covariance[23] = cov_roll_yaw_property_->getFloat();
+    msg.pose.covariance[24] = cov_x_pitch_property_->getFloat();
+    msg.pose.covariance[25] = cov_y_pitch_property_->getFloat();
+    msg.pose.covariance[26] = cov_z_pitch_property_->getFloat();
+    msg.pose.covariance[27] = cov_roll_pitch_property_->getFloat();
+    msg.pose.covariance[28] = cov_pitch_pitch_property_->getFloat();
+    msg.pose.covariance[29] = cov_pitch_yaw_property_->getFloat();
+    msg.pose.covariance[30] = cov_x_yaw_property_->getFloat();
+    msg.pose.covariance[31] = cov_y_yaw_property_->getFloat();
+    msg.pose.covariance[32] = cov_z_yaw_property_->getFloat();
+    msg.pose.covariance[33] = cov_roll_yaw_property_->getFloat();
+    msg.pose.covariance[34] = cov_pitch_yaw_property_->getFloat();
+    msg.pose.covariance[35] = cov_yaw_yaw_property_->getFloat();
+
     ROS_INFO("Setting pose3d: %.3f %.3f %.3f %.3f %.3f %.3f [frame=%s]", point.x(), point.y(), point.z(), roll, pitch, yaw, fixed_frame.c_str());
+
     pub_.publish(msg);
 }
 
